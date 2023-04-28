@@ -1,9 +1,10 @@
 const express = require("express");
-
 const router = express.Router();
 
+const allProducts = require("../db/productsDAO");
+
 router.get("/all", (req, res) => {
-  res.send([2, 3, 4]);
+  res.send(allProducts);
 });
 
 module.exports = router;
