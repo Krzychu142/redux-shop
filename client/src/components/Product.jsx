@@ -1,4 +1,5 @@
-import React from "react";
+import React from 'react';
+import '../styles/product.css';
 
 const Product = ({ name, image, desc, price }) => {
   return (

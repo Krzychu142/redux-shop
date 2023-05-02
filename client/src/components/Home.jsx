@@ -1,7 +1,8 @@
-import React from "react";
-import { useGetAllProductsQuery } from "../features/productsApi";
+import React from 'react';
+import { useGetAllProductsQuery } from '../features/productsApi';
 // import { useSelector } from "react-redux"; only for async thunk
-import Product from "./Product";
+import Product from './Product';
+import '../styles/home.css';
 
 const Home = () => {
   const { data, error, isLoading } = useGetAllProductsQuery();
@@ -16,7 +17,7 @@ const Home = () => {
       ) : (
         <>
           <h2>New Arrivals</h2>
-          <div className="products">
+          <div className="home-products">
             {data?.map((product) => (
               <Product
                 key={product.id}
