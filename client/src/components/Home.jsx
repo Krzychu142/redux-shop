@@ -19,13 +19,7 @@ const Home = () => {
           <h2>New Arrivals</h2>
           <div className="home-products">
             {data?.map((product) => (
-              <Product
-                key={product.id}
-                name={product.name}
-                image={product.image}
-                desc={product.desc}
-                price={product.price}
-              />
+              <Product key={product.id} product={product} />
             ))}
           </div>
         </>
