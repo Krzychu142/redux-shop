@@ -5,7 +5,7 @@
     align-items: center;
     justify-content: center;
 }
-.not-found  h2, p {
+.not-found  h2 p {
     font-size: 3rem;
     font-weight: 700;
     color: #000;
