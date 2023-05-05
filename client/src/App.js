@@ -11,7 +11,7 @@ import NotFound from './components/NotFound';
 function App() {
   return (
     <BrowserRouter>
-      <ToastContainer />
+      <ToastContainer autoClose={1500} closeButton={false} />
       {/* It's allows to use toastify notification in appliaction. */}
       <Navbar />
       <Routes>

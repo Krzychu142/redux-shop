@@ -1,12 +1,13 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import '../styles/cart.css';
 import CartItem from './CartItem';
+import { clearCart } from '../features/cartSlice';
 
 const Cart = () => {
   const cart = useSelector((state) => state.cart);
-
+  const dispatch = useDispatch();
   return (
     <main className="cart-container">
       <h2>Shopping Cart</h2>
@@ -42,24 +43,22 @@ const Cart = () => {
           </div>
           <div className="cart__items">
             {cart?.cartItems.map((item) => {
-              return (
-                <CartItem
-                  key={item.id}
-                  image={item.image}
-                  name={item.name}
-                  desc={item.desc}
-                  price={item.price}
-                  quantity={item.cartQuantity}
-                />
-              );
+              return <CartItem key={item.id} item={item} />;
             })}
           </div>
           <div className="cart__summary">
-            <button className="clear-cart">Clear Cart</button>
+            <button
+              className="clear-cart"
+              onClick={() => dispatch(clearCart())}
+            >
+              Clear Cart
+            </button>
             <div className="cart__checkout">
               <div className="cart__subtotal">
                 <span>Subtotal</span>
-                <span className="cart__subtotal-price">$0</span>
+                <span className="cart__subtotal-price">
+                  {cart.cartTotalAmount}
+                </span>
               </div>
               <p>Taxes and shipping calculated at checkout</p>
               <button className="checkout">Checkout</button>

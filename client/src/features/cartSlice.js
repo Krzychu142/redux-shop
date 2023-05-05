@@ -1,6 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { toast } from 'react-toastify';
 
+const findItemIndexById = (cartItems, itemId) =>
+  cartItems.findIndex((item) => item.id === itemId);
+
 const initialState = {
   cartItems: JSON.parse(localStorage.getItem('cartItems')) || [],
   cartTotalQuantity: 0,
@@ -12,9 +15,7 @@ const cartSlice = createSlice({
   initialState,
   reducers: {
     addToCart(state, action) {
-      const itemIndex = state.cartItems.findIndex(
-        (item) => item.id === action.payload.id
-      );
+      const itemIndex = findItemIndexById(state.cartItems, action.payload.id);
       if (itemIndex >= 0) {
         toast.info('increased quantity of item in cart', {
           position: 'bottom-left',
@@ -32,9 +33,50 @@ const cartSlice = createSlice({
       }
       localStorage.setItem('cartItems', JSON.stringify(state.cartItems));
     },
+    decrementItem(state, action) {
+      const itemIndex = findItemIndexById(state.cartItems, action.payload.id);
+      if (itemIndex >= 0) {
+        if (state.cartItems[itemIndex].cartQuantity > 1) {
+          state.cartItems[itemIndex].cartQuantity--;
+          state.cartTotalQuantity--;
+          state.cartTotalAmount -= action.payload.price;
+          toast.info('decreased quantity of item in cart', {
+            position: 'bottom-left',
+          });
+        } else {
+          toast.error(`${action.payload.name} removed from cart`, {
+            position: 'bottom-left',
+          });
+          state.cartItems.splice(itemIndex, 1);
+          state.cartTotalQuantity--;
+          state.cartTotalAmount -= action.payload.price;
+        }
+      }
+      localStorage.setItem('cartItems', JSON.stringify(state.cartItems));
+    },
+    removeFromCart(state, action) {
+      const itemIndex = findItemIndexById(state.cartItems, action.payload.id);
+      if (itemIndex >= 0) {
+        const itemToRemove = state.cartItems[itemIndex];
+        state.cartItems.splice(itemIndex, 1);
+        state.cartTotalQuantity -= itemToRemove.cartQuantity;
+        state.cartTotalAmount -= itemToRemove.price * itemToRemove.cartQuantity;
+        toast.error(`${itemToRemove.name} removed from cart`, {
+          position: 'bottom-left',
+        });
+      }
+      localStorage.setItem('cartItems', JSON.stringify(state.cartItems));
+    },
+    clearCart(state) {
+      state.cartItems = [];
+      state.cartTotalQuantity = 0;
+      state.cartTotalAmount = 0;
+      localStorage.removeItem('cartItems');
+    },
   },
 });
 
-export const { addToCart } = cartSlice.actions;
+export const { addToCart, removeFromCart, clearCart, decrementItem } =
+  cartSlice.actions;
 
 export default cartSlice.reducer;

@@ -1,7 +1,16 @@
 import React from 'react';
 import '../styles/cart.css';
+import { useDispatch } from 'react-redux';
+import {
+  removeFromCart,
+  addToCart,
+  decrementItem,
+} from '../features/cartSlice';
 
-const CartItem = ({ image, name, desc, price, quantity }) => {
+const CartItem = (props) => {
+  const { image, name, desc, price, cartQuantity } = props.item;
+  const dispatch = useDispatch();
+
   return (
     <div className="cart__item">
       <div className="cart-product">
@@ -9,19 +18,21 @@ const CartItem = ({ image, name, desc, price, quantity }) => {
         <div>
           <h3>{name}</h3>
           <p>{desc}</p>
-          <button>Remove</button>
+          <button onClick={() => dispatch(removeFromCart(props.item))}>
+            Remove
+          </button>
         </div>
       </div>
       <div className="cart-product__price">
         <span>${price}</span>
       </div>
       <div className="cart-product__quantity">
-        <button>-</button>
-        <span className="count">{quantity}</span>
-        <button>+</button>
+        <button onClick={() => dispatch(decrementItem(props.item))}>-</button>
+        <span className="count">{cartQuantity}</span>
+        <button onClick={() => dispatch(addToCart(props.item))}>+</button>
       </div>
       <div className="cart-product__total">
-        <span>${price * quantity}</span>
+        <span>${price * cartQuantity}</span>
       </div>
     </div>
   );
