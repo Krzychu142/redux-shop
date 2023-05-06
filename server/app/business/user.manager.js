@@ -31,7 +31,7 @@ const registerValidation = async (data) => {
   user = await user.save();
 
   return {
-    status: 301,
+    status: 200,
     message: "User created successfully",
     token: generateToken(user),
   };
@@ -60,7 +60,7 @@ const loginValidation = async (data) => {
   }
 
   return {
-    status: 301,
+    status: 200,
     message: "User logged in successfully",
     token: generateToken(user),
   };

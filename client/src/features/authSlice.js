@@ -4,24 +4,21 @@ import { baseUrl } from './api';
 import jwtDecode from 'jwt-decode';
 
 const initialState = {
-  response: null,
+  token: null,
+  message: null,
   registerStatus: 'idle',
 };
 
 export const registerUser = createAsyncThunk(
   'auth/registerUser',
   async (userData, { rejectWithValue }) => {
-    try {
-      const response = await axios.post(`${baseUrl}/user/register`, {
-        name: userData.name,
-        email: userData.email,
-        password: userData.password,
-      });
+    const response = await axios.post(`${baseUrl}/user/register`, {
+      name: userData.name,
+      email: userData.email,
+      password: userData.password,
+    });
 
-      return response.data.token;
-    } catch (error) {
-      return rejectWithValue(error.response.data);
-    }
+    return response;
   }
 );
 
@@ -34,17 +31,10 @@ const authSlice = createSlice({
       state.registerStatus = 'loading';
     });
     builder.addCase(registerUser.fulfilled, (state, action) => {
-      if (action.payload) {
-        state.response = action.payload;
-        state.registerStatus = 'succeeded';
-      } else {
-        state.response = action.payload;
-        state.registerStatus = 'failed';
-      }
+      console.log('fulfilled', action.payload);
     });
     builder.addCase(registerUser.rejected, (state, action) => {
-      state.response = action.payload;
-      state.registerStatus = 'failed';
+      console.log('rejected', action.payload);
     });
   }, // to http requests
 });
