@@ -7,6 +7,7 @@ import Navbar from './components/Navbar';
 import Cart from './components/Cart';
 import Home from './components/Home';
 import NotFound from './components/NotFound';
+import Register from './components/auth/Register';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
       <Routes>
         <Route exact path="/cart" element={<Cart />} />
         <Route exact path="/" element={<Home />} />
+        <Route exact path="/register" element={<Register />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
