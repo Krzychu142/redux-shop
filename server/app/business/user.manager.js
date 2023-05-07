@@ -18,7 +18,7 @@ const registerValidation = async (data) => {
 
   let user = await User.findOne({ email: data.email });
   if (user) {
-    return { status: 400, message: "Email already exists" };
+    return { status: 400, message: "User already exists" };
   }
 
   user = new User({
@@ -32,7 +32,6 @@ const registerValidation = async (data) => {
 
   return {
     status: 200,
-    message: "User created successfully",
     token: generateToken(user),
   };
 };
@@ -61,7 +60,6 @@ const loginValidation = async (data) => {
 
   return {
     status: 200,
-    message: "User logged in successfully",
     token: generateToken(user),
   };
 };

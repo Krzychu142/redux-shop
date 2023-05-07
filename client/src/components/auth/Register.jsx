@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { registerUser } from '../../features/authSlice';
+import '../../styles/auth-forms.css';
 
 const Register = () => {
   const dispatch = useDispatch();
-  const state = useSelector((state) => state.auth);
-  console.log(state);
+  const { message } = useSelector((state) => state.auth);
   const [user, setUser] = useState({
     name: '',
     email: '',
@@ -25,7 +25,7 @@ const Register = () => {
   };
 
   return (
-    <div>
+    <div className="register__container">
       <form onSubmit={handleSubmit}>
         <h2>Register</h2>
         <input
@@ -47,6 +47,7 @@ const Register = () => {
           onChange={(e) => handleChange(e)}
         />
         <button>Register</button>
+        {message && <p>{message}</p>}
       </form>
     </div>
   );

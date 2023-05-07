@@ -4,21 +4,27 @@ import { baseUrl } from './api';
 import jwtDecode from 'jwt-decode';
 
 const initialState = {
-  token: null,
+  token: null || localStorage.getItem('token'),
   message: null,
   registerStatus: 'idle',
+  name: null,
+  email: null,
+  _id: null,
 };
 
 export const registerUser = createAsyncThunk(
   'auth/registerUser',
   async (userData, { rejectWithValue }) => {
-    const response = await axios.post(`${baseUrl}/user/register`, {
-      name: userData.name,
-      email: userData.email,
-      password: userData.password,
-    });
-
-    return response;
+    try {
+      const response = await axios.post(`${baseUrl}/user/register`, {
+        name: userData.name,
+        email: userData.email,
+        password: userData.password,
+      });
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
   }
 );
 
@@ -31,10 +37,18 @@ const authSlice = createSlice({
       state.registerStatus = 'loading';
     });
     builder.addCase(registerUser.fulfilled, (state, action) => {
-      console.log('fulfilled', action.payload);
+      state.registerStatus = 'succeeded';
+      state.token = action.payload.token;
+      localStorage.setItem('token', action.payload.token);
+      const decodedToken = jwtDecode(action.payload.token);
+      state.name = decodedToken.name;
+      state.email = decodedToken.email;
+      state._id = decodedToken._id;
     });
     builder.addCase(registerUser.rejected, (state, action) => {
-      console.log('rejected', action.payload);
+      state.registerStatus = 'failed';
+      state.message = action.payload.message;
+      localStorage.removeItem('token');
     });
   }, // to http requests
 });
