@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 
 const Navbar = () => {
   const { cartTotalQuantity } = useSelector((state) => state.cart);
+  const { isAuthenticated } = useSelector((state) => state.auth);
 
   return (
     <nav className="nav-bar">
@@ -28,6 +29,14 @@ const Navbar = () => {
           </span>
         </div>
       </Link>
+      {isAuthenticated ? (
+        <div>Logout</div>
+      ) : (
+        <div>
+          <Link to="/register">Register</Link>
+          <Link to="/login">Login</Link>
+        </div>
+      )}
     </nav>
   );
 };

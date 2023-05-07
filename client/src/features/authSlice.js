@@ -10,6 +10,7 @@ const initialState = {
   name: null,
   email: null,
   _id: null,
+  isAuthenticated: false,
 };
 
 export const registerUser = createAsyncThunk(
@@ -44,6 +45,7 @@ const authSlice = createSlice({
       state.name = decodedToken.name;
       state.email = decodedToken.email;
       state._id = decodedToken._id;
+      state.isAuthenticated = true;
     });
     builder.addCase(registerUser.rejected, (state, action) => {
       state.registerStatus = 'failed';
