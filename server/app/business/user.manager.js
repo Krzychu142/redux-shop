@@ -64,4 +64,8 @@ const loginValidation = async (data) => {
   };
 };
 
+// TODO: two endpoints: one for change password and one for reset password
+// to change password, user must put in current password and new password
+// to reset password, user must put in email, then we will send an email with a link to reset password - on the link, user will put in new password
+
 module.exports = { registerValidation, loginValidation };
