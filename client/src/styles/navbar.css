@@ -35,7 +35,8 @@
     margin-left: 5px;
 }
 
-.cart__links a, p {
+.cart__links a, 
+.cart__links p {
     text-decoration: none;
     color: white;
     font-size: 18px;

@@ -7,6 +7,7 @@ import { clearCart } from '../features/cartSlice';
 
 const Cart = () => {
   const cart = useSelector((state) => state.cart);
+  const { _id } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   return (
     <main className="cart-container">
@@ -63,7 +64,15 @@ const Cart = () => {
               <p className="cart__subtotal-taxes">
                 Taxes and shipping calculated at checkout
               </p>
-              <button className="checkout">Checkout</button>
+              {_id ? (
+                <button className="checkout">Checkout</button>
+              ) : (
+                <Link to="/login">
+                  <button className="checkout--not-logged">
+                    Login to checkout
+                  </button>
+                </Link>
+              )}
               <div className="continue-shopping">
                 <Link to="/">
                   <svg

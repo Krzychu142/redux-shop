@@ -201,9 +201,12 @@
     font-size: 20px;
 }
 
-.cart__subtotal-taxes {
-    margin-left: 0;
-    color: black;
-    font-size: 16px;
-    cursor: auto;
+.checkout--not-logged {
+    background-color: rgb(207, 207, 46) !important;
+    color: black !important;
+}
+
+.checkout--not-logged:hover {
+    background-color: #f5e600 !important;
+    color: black !important;
 }
