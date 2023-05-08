@@ -1,11 +1,23 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { registerUser } from '../../features/authSlice';
 import '../../styles/auth-forms.css';
+import { Link, useNavigate } from 'react-router-dom';
+import { loadUser } from '../../features/authSlice';
 
 const Register = () => {
   const dispatch = useDispatch();
-  const { message } = useSelector((state) => state.auth);
+  const auth = useSelector((state) => state.auth);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    dispatch(loadUser());
+    if (auth._id) {
+      navigate('/cart');
+    }
+    // eslint-disable-next-line
+  }, [auth._id]);
+
   const [user, setUser] = useState({
     name: '',
     email: '',
@@ -47,7 +59,13 @@ const Register = () => {
           onChange={(e) => handleChange(e)}
         />
         <button>Register</button>
-        {message && <p>{message}</p>}
+        <div className="register--another-action">
+          <p>
+            Already have an account?
+            <Link to="/login">Login</Link>
+          </p>
+        </div>
+        {auth.message && <p>{auth.message}</p>}
       </form>
     </div>
   );

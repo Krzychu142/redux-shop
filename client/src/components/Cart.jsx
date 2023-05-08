@@ -57,10 +57,12 @@ const Cart = () => {
               <div className="cart__subtotal">
                 <span>Subtotal</span>
                 <span className="cart__subtotal-price">
-                  {cart.cartTotalAmount}
+                  ${cart.cartTotalAmount}
                 </span>
               </div>
-              <p>Taxes and shipping calculated at checkout</p>
+              <p className="cart__subtotal-taxes">
+                Taxes and shipping calculated at checkout
+              </p>
               <button className="checkout">Checkout</button>
               <div className="continue-shopping">
                 <Link to="/">

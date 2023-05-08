@@ -34,3 +34,17 @@
     color: white;
     margin-left: 5px;
 }
+
+.cart__links a, p {
+    text-decoration: none;
+    color: white;
+    font-size: 18px;
+    margin-left: 20px;
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+}
+
+.cart__links a:hover,
+.cart__links p:hover {
+    color: #4d50f5;
+}

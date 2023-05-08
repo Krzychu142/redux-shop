@@ -53,9 +53,33 @@
     background-color: #3c3fc7;
 }
 
-.register__container form p {
+.register__container form  p {
     font-size: 14px;
     font-weight: 400;
-    margin-bottom: 1rem;
     color: red;
+}
+
+.register--another-action {
+    display: flex;
+    align-items: center;
+    margin-top: 1rem;
+}
+
+.register--another-action a {
+    text-decoration: none;
+    color: #4d50f5;
+    font-size: 14px;
+    font-weight: 400;
+    margin-left: 5px;
+    transition: all 0.2s ease-in-out;
+    font-weight: bold;
+    transition: all 0.2s ease-in-out;
+}
+
+.register--another-action a:hover {
+    color: #3c3fc7;
+}
+
+.register--another-action p {
+    color: black !important;
 }

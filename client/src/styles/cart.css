@@ -200,3 +200,10 @@
 .cart--empty .start-shopping a,  .cart--empty .start-shopping a span{
     font-size: 20px;
 }
+
+.cart__subtotal-taxes {
+    margin-left: 0;
+    color: black;
+    font-size: 16px;
+    cursor: auto;
+}
