@@ -9,6 +9,7 @@ import Home from './components/Home';
 import NotFound from './components/NotFound';
 import Register from './components/auth/Register';
 import Login from './components/auth/Login';
+import Reset from './components/auth/Reset';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Route exact path="/" element={<Home />} />
         <Route exact path="/register" element={<Register />} />
         <Route exact path="/login" element={<Login />} />
+        <Route path="/reset" element={<Reset />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>

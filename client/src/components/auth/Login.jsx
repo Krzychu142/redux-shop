@@ -57,7 +57,7 @@ const Login = () => {
         </div>
         <div className="register--another-action">
           <p>Forgot password?</p>
-          <Link to="/">Reset</Link>
+          <Link to="/reset">Reset</Link>
         </div>
         {auth.message && <p>{auth.message}</p>}
       </form>

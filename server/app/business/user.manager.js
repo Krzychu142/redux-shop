@@ -2,6 +2,7 @@ const Joi = require("joi");
 const User = require("../db/models/user.model");
 const { hashPassword, unHashPassword } = require("../middleware/crypt");
 const { generateToken } = require("../middleware/jwtGenerator");
+const { transporter } = require("../middleware/nodemailerConfig");
 
 const registerValidation = async (data) => {
   const schema = Joi.object({
@@ -64,8 +65,42 @@ const loginValidation = async (data) => {
   };
 };
 
-// TODO: two endpoints: one for change password and one for reset password
-// to change password, user must put in current password and new password
-// to reset password, user must put in email, then we will send an email with a link to reset password - on the link, user will put in new password
+const sendResetPasswordEmail = async (req, res) => {
+  const { email } = req.body;
 
-module.exports = { registerValidation, loginValidation };
+  try {
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(400).json({ message: "User not found" });
+    }
+
+    const token = generateToken(user, true);
+
+    user.passwordResetToken = token;
+    user.passwordResetExpires = Date.now() + 3600000;
+    await user.save();
+
+    const resetPasswordUrl = `http://localhost:3000/reset-password/${token}`;
+
+    const mailOptions = {
+      from: process.env.EMAIL_ADRESS,
+      to: email,
+      subject: "Password Reset",
+      text: `You have requested a password reset. Please click the following link to reset your password: ${resetPasswordUrl}`,
+      html: `<p>You have requested a password reset. Please click the following link to reset your password: <a href="${resetPasswordUrl}">${resetPasswordUrl}</a></p>`,
+    };
+
+    await transporter.sendMail(mailOptions);
+
+    res.status(200).json({ message: "Reset password email sent" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+module.exports = {
+  registerValidation,
+  loginValidation,
+  sendResetPasswordEmail,
+};
