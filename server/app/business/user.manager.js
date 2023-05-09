@@ -99,8 +99,44 @@ const sendResetPasswordEmail = async (req, res) => {
   }
 };
 
+const changePasswordValidation = async (req) => {
+  const data = req.body;
+
+  const schema = Joi.object({
+    currentPassword: Joi.string().min(6).max(200).required(),
+    newPassword: Joi.string().min(6).max(200).required(),
+  });
+
+  const { error } = schema.validate(data);
+
+  if (error) {
+    return { status: 400, message: error.details[0].message };
+  }
+
+  const user = await User.findById(req.user._id);
+
+  if (!user) {
+    return { status: 404, message: "User not found" };
+  }
+
+  const validPassword = await unHashPassword(
+    data.currentPassword,
+    user.password
+  );
+
+  if (!validPassword) {
+    return { status: 400, message: "Invalid current password" };
+  }
+
+  user.password = await hashPassword(data.newPassword);
+  await user.save();
+
+  return { status: 200, message: "Password changed successfully" };
+};
+
 module.exports = {
   registerValidation,
   loginValidation,
   sendResetPasswordEmail,
+  changePasswordValidation,
 };

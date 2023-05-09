@@ -4,6 +4,7 @@ const {
   registerValidation,
   loginValidation,
   sendResetPasswordEmail,
+  changePasswordValidation,
 } = require("../business/user.manager");
 const { verifyToken } = require("../middleware/verifyToken");
 
@@ -27,6 +28,12 @@ router.post("/login", (req, res) => {
   });
 });
 
-router.post("/send-reset-password-email", verifyToken, sendResetPasswordEmail);
+router.post("/send-reset-password-email", sendResetPasswordEmail);
+
+router.post("/change-password", verifyToken, async (req, res) => {
+  const result = await changePasswordValidation(req);
+
+  res.status(result.status).json({ message: result.message });
+});
 
 module.exports = router;
