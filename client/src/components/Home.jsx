@@ -1,7 +1,7 @@
 import React from 'react';
 import { useGetAllProductsQuery } from '../features/productsApi';
 // import { useSelector } from "react-redux"; only for async thunk
-import Product from './Product';
+import Product from './cart/Product';
 import '../styles/home.css';
 
 const Home = () => {

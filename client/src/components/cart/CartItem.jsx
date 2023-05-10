@@ -1,11 +1,11 @@
 import React from 'react';
-import '../styles/cart.css';
+import '../../styles/cart.css';
 import { useDispatch } from 'react-redux';
 import {
   removeFromCart,
   addToCart,
   decrementItem,
-} from '../features/cartSlice';
+} from '../../features/cartSlice';
 
 const CartItem = (props) => {
   const { image, name, desc, price, cartQuantity } = props.item;
