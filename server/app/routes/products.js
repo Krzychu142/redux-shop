@@ -1,10 +1,8 @@
 const express = require("express");
 const router = express.Router();
+const { getAllProducts, addProduct } = require("../business/product.manager");
 
-const allProducts = require("../db/productsDAO");
-
-router.get("/all", (req, res) => {
-  res.send(allProducts);
-});
+router.get("/all", getAllProducts);
+router.post("/add-product", addProduct);
 
 module.exports = router;
