@@ -3,6 +3,7 @@ const User = require("../db/models/user.model");
 const { hashPassword, unHashPassword } = require("../middleware/crypt");
 const { generateToken } = require("../middleware/jwtGenerator");
 const { transporter } = require("../middleware/nodemailerConfig");
+const { decode } = require("../middleware/verifyToken");
 
 const registerValidation = async (data) => {
   const schema = Joi.object({
@@ -99,6 +100,50 @@ const sendResetPasswordEmail = async (req, res) => {
   }
 };
 
+const resetPassword = async (req, res, next) => {
+  const schema = Joi.object({
+    password: Joi.string().min(6).max(200).required(),
+    token: Joi.string().required(),
+  });
+
+  const { error } = schema.validate(req.body);
+  if (error) {
+    return res.status(400).json({
+      message: error.details ? error.details[0].message : "Validation error",
+    });
+  }
+
+  const { token, password } = req.body;
+
+  try {
+    const decoded = decode(token);
+    const userId = decoded._id;
+
+    const user = await User.findOne({ _id: userId });
+
+    if (!user) {
+      return res.status(400).json({ message: "User not found" });
+    }
+
+    if (Date.now() > user.passwordResetExpires) {
+      return res.status(400).json({ message: "Token expired" });
+    }
+
+    const hashedPassword = await hashPassword(password);
+
+    user.password = hashedPassword;
+    user.passwordResetToken = undefined;
+    user.passwordResetExpires = undefined;
+
+    await user.save();
+
+    res.status(200).json({ message: "Password successfully reset" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
 const changePasswordValidation = async (req) => {
   const data = req.body;
 
@@ -139,4 +184,5 @@ module.exports = {
   loginValidation,
   sendResetPasswordEmail,
   changePasswordValidation,
+  resetPassword,
 };

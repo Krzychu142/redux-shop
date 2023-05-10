@@ -83,3 +83,7 @@
 .register--another-action p {
     color: black !important;
 }
+
+.succeeded {
+    color: green !important;
+}

@@ -9,7 +9,8 @@ import Home from './components/Home';
 import NotFound from './components/NotFound';
 import Register from './components/auth/Register';
 import Login from './components/auth/Login';
-import Reset from './components/auth/Reset';
+import Reset from './components/auth/email/ResetPasswordProvider';
+import ResetPassword from './components/auth/email/ResetPasswordConfirm';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
         <Route exact path="/register" element={<Register />} />
         <Route exact path="/login" element={<Login />} />
         <Route path="/reset" element={<Reset />} />
+        <Route path="/reset-password/:token" element={<ResetPassword />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>

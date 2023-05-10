@@ -5,6 +5,7 @@ const {
   loginValidation,
   sendResetPasswordEmail,
   changePasswordValidation,
+  resetPassword,
 } = require("../business/user.manager");
 const { verifyToken } = require("../middleware/verifyToken");
 
@@ -35,5 +36,7 @@ router.post("/change-password", verifyToken, async (req, res) => {
 
   res.status(result.status).json({ message: result.message });
 });
+
+router.post("/reset-password", resetPassword);
 
 module.exports = router;
