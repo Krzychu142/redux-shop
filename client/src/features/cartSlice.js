@@ -4,10 +4,18 @@ import { toast } from 'react-toastify';
 const findItemIndexById = (cartItems, itemId) =>
   cartItems.findIndex((item) => item.id === itemId);
 
+const calculateTotalQuantity = (cartItems) =>
+  cartItems.reduce((total, item) => total + item.cartQuantity, 0);
+
+const calculateTotalAmount = (cartItems) =>
+  cartItems.reduce((total, item) => total + item.price * item.cartQuantity, 0);
+
+let initialCartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+
 const initialState = {
-  cartItems: JSON.parse(localStorage.getItem('cartItems')) || [],
-  cartTotalQuantity: 0,
-  cartTotalAmount: 0,
+  cartItems: initialCartItems,
+  cartTotalQuantity: calculateTotalQuantity(initialCartItems),
+  cartTotalAmount: calculateTotalAmount(initialCartItems),
 };
 
 const cartSlice = createSlice({
