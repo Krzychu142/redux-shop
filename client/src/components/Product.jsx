@@ -1,8 +1,8 @@
 import React from 'react';
-import '../../styles/product.css';
+import '../styles/product.css';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { addToCart } from '../../features/cartSlice';
+import { addToCart } from '../features/cartSlice';
 
 const Product = (props) => {
   const { name, image, desc, price } = props.product;
