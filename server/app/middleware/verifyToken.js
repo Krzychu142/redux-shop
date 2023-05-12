@@ -1,7 +1,11 @@
 const jwt = require("jsonwebtoken");
 
 const decode = (token) => {
-  return jwt.verify(token, process.env.JWT_SECRET_KEY);
+  try {
+    return jwt.verify(token, process.env.JWT_SECRET_KEY);
+  } catch (error) {
+    return { error: true, message: "Invalid token." };
+  }
 };
 
 const verifyToken = (req, res, next) => {

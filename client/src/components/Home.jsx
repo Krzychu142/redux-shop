@@ -9,7 +9,7 @@ const Home = () => {
   // const {items, status} = useSelector((state) => state.products); only for async thunk
 
   return (
-    <div className="home-container">
+    <main className="home-container">
       {isLoading ? (
         <p>Loading...</p>
       ) : error ? (
@@ -24,7 +24,7 @@ const Home = () => {
           </div>
         </>
       )}
-    </div>
+    </main>
   );
 };
 

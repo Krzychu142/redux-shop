@@ -5,10 +5,14 @@ import { baseUrl } from './api';
 const initialState = {
   message: null,
   status: 'idle',
+  resetPasswordConfirm: {
+    message: null,
+    status: 'idle',
+  },
 };
 
 export const resetPassword = createAsyncThunk(
-  'auth/resetPassword',
+  'passwordReset/resetPassword',
   async (email, { rejectWithValue }) => {
     try {
       const response = await axios.post(
@@ -17,6 +21,21 @@ export const resetPassword = createAsyncThunk(
           email: email,
         }
       );
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const resetPasswordConfirm = createAsyncThunk(
+  'passwordReset/resetPasswordConfirm',
+  async (data, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(`${baseUrl}/user/reset-password`, {
+        token: data.token,
+        password: data.password,
+      });
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -39,6 +58,18 @@ const passwordResetSlice = createSlice({
     builder.addCase(resetPassword.rejected, (state, action) => {
       state.status = 'failed';
       state.message = action.payload.message;
+    });
+    // resetPasswordConfirm
+    builder.addCase(resetPasswordConfirm.pending, (state, action) => {
+      state.resetPasswordConfirm.status = 'loading';
+    });
+    builder.addCase(resetPasswordConfirm.fulfilled, (state, action) => {
+      state.resetPasswordConfirm.status = 'succeeded';
+      state.resetPasswordConfirm.message = action.payload.message;
+    });
+    builder.addCase(resetPasswordConfirm.rejected, (state, action) => {
+      state.resetPasswordConfirm.status = 'failed';
+      state.resetPasswordConfirm.message = action.payload.message;
     });
   },
 });

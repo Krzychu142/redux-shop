@@ -8,8 +8,12 @@ const {
   resetPassword,
 } = require("../business/user.manager");
 const { verifyToken } = require("../middleware/verifyToken");
+const {
+  authLimiter,
+  passwordResetEmailLimiter,
+} = require("../middleware/rateLimitMiddleware");
 
-router.post("/register", (req, res) => {
+router.post("/register", authLimiter, (req, res) => {
   registerValidation(req.body).then((result) => {
     res
       .status(result.status)
@@ -19,7 +23,7 @@ router.post("/register", (req, res) => {
   });
 });
 
-router.post("/login", (req, res) => {
+router.post("/login", authLimiter, (req, res) => {
   loginValidation(req.body).then((result) => {
     res
       .status(result.status)
@@ -29,14 +33,18 @@ router.post("/login", (req, res) => {
   });
 });
 
-router.post("/send-reset-password-email", sendResetPasswordEmail);
+router.post(
+  "/send-reset-password-email",
+  passwordResetEmailLimiter,
+  sendResetPasswordEmail
+);
 
-router.post("/change-password", verifyToken, async (req, res) => {
+router.post("/change-password", verifyToken, authLimiter, async (req, res) => {
   const result = await changePasswordValidation(req);
 
   res.status(result.status).json({ message: result.message });
 });
 
-router.post("/reset-password", resetPassword);
+router.post("/reset-password", authLimiter, resetPassword);
 
 module.exports = router;

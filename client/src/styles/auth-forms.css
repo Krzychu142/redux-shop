@@ -49,6 +49,12 @@
     transition: all 0.2s ease-in-out;
 }
 
+.register__container form button:disabled {
+    background-color: #ccc;
+    color: #aaa;
+    cursor: not-allowed;
+}
+
 .register__container form button:hover {
     background-color: #3c3fc7;
 }
