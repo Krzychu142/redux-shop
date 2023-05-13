@@ -3,24 +3,33 @@ import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { baseUrl } from '../../features/api';
 
-const PayButton = () => {
-  const { user } = useSelector((state) => state.auth);
+const PayButton = ({ cartItems }) => {
+  const { _id } = useSelector((state) => state.auth);
   const { cart, total } = useSelector((state) => state.cart);
 
-  const handleCheckout = async () => {
-    const products = cart.map((item) => ({
-      id: item.id,
-      quantity: item.quantity,
-    }));
+  const handleCheckout = () => {
+    // const products = cart.map((item) => ({
+    //   id: item.id,
+    //   quantity: item.quantity,
+    // }));
 
-    const body = {
-      products,
-      total,
-      user,
-    };
+    // const body = {
+    //   products,
+    //   total,
+    //   user,
+    // };
 
-    const res = await axios.post(`${baseUrl}/api/checkout`, body);
-    console.log(res);
+    axios
+      .post(`${baseUrl}/stripe/create-checkout-session`, {
+        cartItems,
+        _id,
+      })
+      .then((res) => {
+        if (res.data.url) {
+          window.location.href = res.data.url;
+        }
+      })
+      .catch((err) => console.log(err));
   };
 
   return (

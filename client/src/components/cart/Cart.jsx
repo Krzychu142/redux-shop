@@ -66,7 +66,7 @@ const Cart = () => {
                 Taxes and shipping calculated at checkout
               </p>
               {_id ? (
-                <PayButton />
+                <PayButton cartItems={cart.cartItems} />
               ) : (
                 <Link to="/login">
                   <button className="checkout--not-logged">
