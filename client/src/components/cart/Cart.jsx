@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import '../../styles/cart.css';
 import CartItem from './CartItem';
 import { clearCart } from '../../features/cartSlice';
-import PayButton from './PayButton';
+import CheckoutButton from './CheckoutButton';
 
 const Cart = () => {
   const cart = useSelector((state) => state.cart);
@@ -66,7 +66,7 @@ const Cart = () => {
                 Taxes and shipping calculated at checkout
               </p>
               {_id ? (
-                <PayButton cartItems={cart.cartItems} />
+                <CheckoutButton cartItems={cart.cartItems} />
               ) : (
                 <Link to="/login">
                   <button className="checkout--not-logged">
