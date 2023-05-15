@@ -62,7 +62,13 @@ const authSlice = createSlice({
     logoutUser(state, action) {
       localStorage.removeItem('token');
       return {
-        initialState,
+        token: null,
+        message: null,
+        registerStatus: 'idle',
+        loginStatus: 'idle',
+        name: null,
+        email: null,
+        _id: null,
       };
     },
   },

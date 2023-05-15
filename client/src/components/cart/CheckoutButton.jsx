@@ -5,20 +5,8 @@ import { baseUrl } from '../../features/api';
 
 const PayButton = ({ cartItems }) => {
   const { _id } = useSelector((state) => state.auth);
-  const { cart, total } = useSelector((state) => state.cart);
 
   const handleCheckout = () => {
-    // const products = cart.map((item) => ({
-    //   id: item.id,
-    //   quantity: item.quantity,
-    // }));
-
-    // const body = {
-    //   products,
-    //   total,
-    //   user,
-    // };
-
     axios
       .post(`${baseUrl}/stripe/create-checkout-session`, {
         cartItems,

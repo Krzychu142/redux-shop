@@ -2,6 +2,13 @@ const Stripe = require("stripe");
 const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
 
 const createCheckoutSession = async (res, req, data) => {
+  const customer = await stripe.customers.create({
+    metadata: {
+      userId: req.userId,
+      cart: JSON.stringify(req.cartItems),
+    },
+  });
+
   const items = req.cartItems;
   const line_items = items.map((item) => {
     return {
@@ -71,6 +78,7 @@ const createCheckoutSession = async (res, req, data) => {
       enabled: true,
     },
     line_items: line_items,
+    customer: customer.id,
     mode: "payment",
     success_url: `${process.env.CLIENT_URL}/checkout-success`,
     cancel_url: `${process.env.CLIENT_URL}/cart`,
@@ -78,4 +86,40 @@ const createCheckoutSession = async (res, req, data) => {
   res.send({ url: session.url });
 };
 
-module.exports = { createCheckoutSession };
+const handleWebhook = (req, res) => {
+  const payload = req.body;
+  const payloadString = JSON.stringify(payload, null, 2);
+  const header = stripe.webhooks.generateTestHeaderString({
+    payload: payloadString,
+    secret: process.env.STRIPE_ENDPOINT_SECRET,
+  });
+
+  let event;
+  try {
+    event = stripe.webhooks.constructEvent(
+      payloadString,
+      header,
+      process.env.STRIPE_ENDPOINT_SECRET
+    );
+    console.log(`Webhook Verified: `, event);
+  } catch (err) {
+    console.log(`Webhook Error: ${err.message}`);
+    res.status(400).send(`Webhook Error: ${err.message}`);
+    return;
+  }
+
+  if (event.type === "checkout.session.completed") {
+    stripe.customers
+      .retrieve(event.data.object.customer)
+      .then((customer) => {
+        console.log("Customer: ", customer);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  res.send();
+};
+
+module.exports = { createCheckoutSession, handleWebhook };
