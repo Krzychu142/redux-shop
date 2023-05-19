@@ -1,5 +1,62 @@
 const Stripe = require("stripe");
+const Order = require("../db/models/order.model");
 const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
+const { transporter } = require("../middleware/nodemailerConfig");
+
+// to run it in the local environment, you need to in termianl:
+// stripe login
+// stripe listen --forward-to localhost:YOUR_PORT/stripe/webhook
+// you can check it by: stripe trigger payment_intent.succeeded
+
+const createOrder = async (customer, data) => {
+  const items = JSON.parse(customer.metadata.cart);
+
+  const newOrder = new Order({
+    email: customer.email,
+    customerId: data.id,
+    paymentIntentId: data.payment_intent,
+    products: items,
+    subtotal: data.amount_subtotal,
+    total: data.amount_total,
+    shipping: data.customer_details,
+    payment_status: data.payment_status,
+  });
+
+  try {
+    await newOrder.save();
+
+    const mailOptions = {
+      from: process.env.EMAIL_ADRESS,
+      to: customer.email,
+      subject: "Order confirmation",
+      html: `<h1>Thank you for your order!</h1>
+      <p>Order ID: ${newOrder._id}</p>
+      <p>Order total: $${newOrder.total / 100}</p>
+      <p>Order status: ${newOrder.payment_status}</p>
+      <p>Order details: ${newOrder.products}</p>
+      <p>Shipping address: ${newOrder.shipping.address.line1}, ${
+        newOrder.shipping.address.city
+      }, ${newOrder.shipping.address.state}, ${
+        newOrder.shipping.address.postal_code
+      }, ${newOrder.shipping.address.country}</p>
+      <p>Shipping method: ${newOrder.shipping.carrier}</p>
+      <p>Shipping status: ${newOrder.delivery_status}</p>
+      <p>Thank you for shopping with us!</p>`,
+    };
+
+    transporter.sendMail(mailOptions, (err, info) => {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log("Email sent: " + info.response);
+      }
+    });
+
+    // send email to the customer
+  } catch (err) {
+    console.error("Error while adding order to the database:", err);
+  }
+};
 
 const createCheckoutSession = async (res, req, data) => {
   const customer = await stripe.customers.create({
@@ -101,7 +158,6 @@ const handleWebhook = (req, res) => {
       header,
       process.env.STRIPE_ENDPOINT_SECRET
     );
-    console.log(`Webhook Verified: `, event);
   } catch (err) {
     console.log(`Webhook Error: ${err.message}`);
     res.status(400).send(`Webhook Error: ${err.message}`);
@@ -112,7 +168,7 @@ const handleWebhook = (req, res) => {
     stripe.customers
       .retrieve(event.data.object.customer)
       .then((customer) => {
-        console.log("Customer: ", customer);
+        createOrder(customer, event.data.object);
       })
       .catch((err) => {
         console.log(err);
