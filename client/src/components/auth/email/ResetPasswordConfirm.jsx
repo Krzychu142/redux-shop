@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { resetPasswordConfirm } from '../../../features/passwordResetSlice';
-import '../../../styles/auth-forms.css';
 
 const ResetPasswordConfir = () => {
   const navigate = useNavigate();

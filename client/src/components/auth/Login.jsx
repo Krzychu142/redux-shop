@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import '../../styles/auth-forms.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser } from '../../features/authSlice';
 import { useNavigate } from 'react-router-dom';

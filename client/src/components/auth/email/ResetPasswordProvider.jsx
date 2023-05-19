@@ -1,7 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { resetPassword } from '../../../features/passwordResetSlice';
-import '../../../styles/auth-forms.css';
 
 const Reset = () => {
   const emailRef = useRef(null);
