@@ -26,7 +26,7 @@ const createOrder = async (customer, data) => {
     await newOrder.save();
 
     const mailOptions = {
-      from: process.env.EMAIL_ADRESS,
+      from: "Online shop <" + process.env.EMAIL_ADRESS + ">",
       to: customer.email,
       subject: "Order confirmation",
       html: `<h1>Thank you for your order!</h1>
@@ -137,8 +137,9 @@ const createCheckoutSession = async (res, req, data) => {
     line_items: line_items,
     customer: customer.id,
     mode: "payment",
+    // success_url: `${process.env.CLIENT_URL}/checkout-success?session_id={CHECKOUT_SESSION_ID}`,
     success_url: `${process.env.CLIENT_URL}/checkout-success`,
-    cancel_url: `${process.env.CLIENT_URL}/cart`,
+    cancel_url: `${process.env.CLIENT_URL}/checkout-failure`,
   });
   res.send({ url: session.url });
 };

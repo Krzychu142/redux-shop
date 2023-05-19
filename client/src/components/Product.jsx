@@ -1,8 +1,8 @@
 import React from 'react';
-import '../styles/product.css';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { addToCart } from '../features/cartSlice';
+import { Image } from 'antd';
 
 const Product = (props) => {
   const { name, image, desc, price } = props.product;
@@ -17,7 +17,7 @@ const Product = (props) => {
   return (
     <div className="product">
       <h3>{name}</h3>
-      <img src={image} alt={name} />
+      <Image className="product-image" src={image} alt={desc} />
       <div className="details">
         <span>{desc}</span>
         <span className="price">${price}</span>

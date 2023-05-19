@@ -1,5 +1,4 @@
 import React from 'react';
-import '../../styles/cart.css';
 import { useDispatch } from 'react-redux';
 import {
   removeFromCart,

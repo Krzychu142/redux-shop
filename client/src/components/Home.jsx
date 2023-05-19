@@ -2,7 +2,7 @@ import React from 'react';
 import { useGetAllProductsQuery } from '../features/productsApi';
 // import { useSelector } from "react-redux"; only for async thunk
 import Product from './Product';
-import '../styles/home.css';
+import { Spin } from 'antd';
 
 const Home = () => {
   const { data, error, isLoading } = useGetAllProductsQuery();
@@ -11,7 +11,7 @@ const Home = () => {
   return (
     <main className="home-container">
       {isLoading ? (
-        <p>Loading...</p>
+        <Spin />
       ) : error ? (
         <p>An error occured</p>
       ) : (

@@ -1,0 +1,65 @@
+@import './global/variables.scss';
+
+.footer__container {
+    background-color: $primary;
+    height: 170px;
+    border-top: 5px solid $contrast;
+    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.75);
+    padding: 1rem 2rem;
+    
+
+    .footer__content {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        color: $contrast-light;
+    
+        .footer__content__left {
+    
+            h3 {
+                font-weight: bold;
+            }
+
+            p {
+                margin: 0.5rem 0;
+            }
+    
+            a {
+                color: $contrast;
+                text-decoration: none;
+                margin-left: 10px;
+                transition: all 0.2s ease-in-out;
+            }
+                
+            a:hover {
+                color: $contrast-light;
+            }
+
+        }
+    
+        .footer__content__right {
+                
+            h3 {
+                font-weight: bold;
+            }
+    
+            .footer__content__right__icons {
+
+                a {
+                    color: $contrast;
+                    font-size: 1.5rem;
+                    margin-right: 10px;
+                    transition: all 0.2s ease-in-out;
+                }
+
+                a:hover {
+                    color: $contrast-light;
+                }
+
+            }
+
+        }
+
+    }
+
+}

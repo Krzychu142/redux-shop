@@ -4,7 +4,7 @@ import App from './App';
 import { Provider } from 'react-redux';
 import store from './store';
 /* FYI: after test, styles from scss, works corectlly */
-// import './styles/scss/main.scss';
+import './styles/scss/main.scss';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

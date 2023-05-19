@@ -84,7 +84,7 @@ const sendResetPasswordEmail = async (req, res) => {
     const resetPasswordUrl = `http://localhost:3000/reset-password/${token}`;
 
     const mailOptions = {
-      from: process.env.EMAIL_ADRESS,
+      from: "Online shop <" + process.env.EMAIL_ADRESS + ">",
       to: email,
       subject: "Password Reset",
       text: `You have requested a password reset. Please click the following link to reset your password: ${resetPasswordUrl}`,

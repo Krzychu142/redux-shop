@@ -1,0 +1,150 @@
+@import './global/variables.scss';
+
+.nav-bar {
+    background-color: $primary;
+    height: 150px;
+    border-bottom: 5px solid $contrast;
+    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.75);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    padding: 1rem 2rem;
+    margin-bottom: 2rem;
+
+    a {
+        text-decoration: none;
+    
+        h2 {
+            color: $contrast-light;
+            font-size: 3rem;
+            transition: all 0.2s ease-in-out;
+            text-shadow: 0px 0px 10px rgba(255, 242, 0, 0.3);
+            margin-right: 2rem;
+            position: relative;
+
+            &::before {
+                content: '';
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                width: 0;
+                height: 3px;
+                background-color: $contrast;
+                transition: width 0.3s ease-in-out;
+            }
+
+            &:hover {
+                color: $contrast;
+                text-shadow: 0px 0px 10px rgba(224, 211, 0, 0.3);
+
+                &::before {
+                    width: 100%;
+                }
+            }
+        }
+
+        @media (max-width: 768px) {
+            h2 {
+                font-size: 2rem;
+            }
+
+        }
+
+    }
+
+    .nav-bag {
+        a {
+            color: $contrast-light;
+            font-size: 1rem;
+        }
+
+        &__bag-icno {
+            display: flex;
+            align-items: center;
+
+            .custom-icon {
+                color: $contrast-light;
+                font-size: 3rem;
+                margin-right: 1.5rem;
+                transition: all 0.2s ease-in-out;
+            }
+
+            .custom-icon:hover {
+                color: $contrast;
+            }
+
+            .bag-quantiti {
+                font-size: 2rem;
+
+                span {
+                    color: $contrast-light;
+                }
+                
+            }
+        }
+
+        @media (max-width: 768px) {
+
+            &__bag-icno {
+
+                .custom-icon {
+                    margin-right: 1rem;
+                    font-size: 2rem;
+                }
+
+                .bag-quantiti {
+                    font-size: 1.5rem;
+                }
+
+            }
+        }
+    }
+
+    .cart__links {
+        margin-top: 1rem;
+
+        p {
+            color: $contrast-light;
+            font-size: 1rem;
+            margin-right: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;       
+            
+            .custom-icon {
+                color: $contrast-light;
+                font-size: 1.2rem;
+                margin-left: 0.3rem;
+                transition: all 0.2s ease-in-out;
+            }
+
+            &:hover {
+                .custom-icon {
+                    color: $contrast;
+                }
+            }
+
+            @media (max-width: 768px) {
+                .custom-icon {
+                    font-size: 1rem;
+                }
+            }
+
+        }
+
+        a {
+            margin-right: 1rem;
+            font-weight: bold;
+        }
+        
+    }
+
+    @media (max-width: 768px) {
+        .cart__links {
+            margin: 0.5rem 0;
+        }
+
+    }
+
+}
